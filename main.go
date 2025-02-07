@@ -9,6 +9,12 @@ import (
 	"go.einride.tech/can/pkg/socketcan"
 )
 
+func incrementData(data *can.Data, len uint8) {
+	for i := 0; i < int(len); i++ {
+		data[i]++
+	}
+}
+
 func main() {
 	conn, _ := socketcan.DialContext(context.Background(), "can", "vcan0")
 
@@ -46,18 +52,22 @@ func main() {
 
 			switch (counter) {
 			case 0:
+				incrementData(&frame660.Data, frame660.Length)
 				_ = tx.TransmitFrame(context.Background(), frame660)
 				fmt.Println("Sent 660: ", frame660)
 				break
 			case 1:
+				incrementData(&frame661.Data, frame661.Length)
 				_ = tx.TransmitFrame(context.Background(), frame661)
 				fmt.Println("Sent 661: ", frame661)
 				break
 			case 2:
+				incrementData(&frame662.Data, frame662.Length)
 				_ = tx.TransmitFrame(context.Background(), frame662)
 				fmt.Println("Sent 662: ", frame662)
 				break
 			case 3:
+				incrementData(&frame663.Data, frame663.Length)
 				_ = tx.TransmitFrame(context.Background(), frame663)
 				fmt.Println("Sent 663: ", frame663)
 				break
