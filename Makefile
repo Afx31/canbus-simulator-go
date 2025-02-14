@@ -12,7 +12,7 @@ rebuild: compile
 
 
 # Runs already compiled executable
-run: compile
+run:
 	./${BINARY_NAME}
 
 
