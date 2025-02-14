@@ -5,16 +5,13 @@ BINARY_DIR=./
 compile:
 	go build -o ${BINARY_NAME} ${BINARY_DIR}
 
-
 # Compiles executable and runs
 rebuild: compile
 	./${BINARY_NAME}
 
-
 # Runs already compiled executable
 run:
 	./${BINARY_NAME}
-
 
 # Cleans and removes executable
 purge:
