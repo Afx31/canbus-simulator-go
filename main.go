@@ -28,7 +28,7 @@ type Frame662 struct {
 }
 
 type Frame663 struct {
-	Inj					uint16
+	Inj					float64
 	Ign					uint16
 }
 
@@ -101,7 +101,6 @@ func incrementFrameData(frame *can.Frame) {
 		binary.BigEndian.PutUint16(frame.Data[2:4], frame660.Speed)
 		frame.Data[4] = frame660.Gear
 		frame.Data[5] = frame660.Voltage
-		break
 	
 	case 661:
 		if (frame661.Iat == 60) {
@@ -116,7 +115,6 @@ func incrementFrameData(frame *can.Frame) {
 
     binary.BigEndian.PutUint16(frame.Data[0:2], frame661.Iat)
     binary.BigEndian.PutUint16(frame.Data[2:4], frame661.Ect)
-    break
 
   case 662:
     if (frame662.Tps == 100) {
@@ -131,7 +129,6 @@ func incrementFrameData(frame *can.Frame) {
 
     binary.BigEndian.PutUint16(frame.Data[0:2], frame662.Tps)
     binary.BigEndian.PutUint16(frame.Data[2:4], frame662.Map)
-    break
     
   case 663:
     if (frame663.Inj == 20) {
@@ -144,9 +141,8 @@ func incrementFrameData(frame *can.Frame) {
     frame663.Inj += 1
     frame663.Ign += 1
 
-    binary.BigEndian.PutUint16(frame.Data[0:2], frame663.Inj)
+    binary.BigEndian.PutUint16(frame.Data[0:2], uint16(frame663.Inj))
     binary.BigEndian.PutUint16(frame.Data[2:4], frame663.Ign)
-    break
 
   case 664:
     if (frame664.LambdaRatio == 50000) {
@@ -156,7 +152,6 @@ func incrementFrameData(frame *can.Frame) {
     frame664.LambdaRatio += 1
 
     binary.BigEndian.PutUint16(frame.Data[0:2], frame664.LambdaRatio)
-    break
 
   case 667:
     if (frame667.OilTemp == 150) {
@@ -171,7 +166,6 @@ func incrementFrameData(frame *can.Frame) {
 
     binary.BigEndian.PutUint16(frame.Data[0:2], frame667.OilTemp)
     binary.BigEndian.PutUint16(frame.Data[2:4], frame667.OilPressure)
-    break
 	}
 }
 
@@ -211,7 +205,7 @@ func main() {
 	
 	tx := socketcan.NewTransmitter(conn)
 
-	ticker := time.NewTicker(time.Duration(100) * time.Millisecond)
+	ticker := time.NewTicker(time.Duration(10) * time.Millisecond)
 	defer ticker.Stop()
 
 	counter := 0
