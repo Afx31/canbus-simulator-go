@@ -205,7 +205,7 @@ func main() {
 	
 	tx := socketcan.NewTransmitter(conn)
 
-	ticker := time.NewTicker(time.Duration(10) * time.Millisecond)
+	ticker := time.NewTicker(time.Duration(50) * time.Millisecond)
 	defer ticker.Stop()
 
 	counter := 0
