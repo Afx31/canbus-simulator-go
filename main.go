@@ -10,6 +10,8 @@ import (
 	"go.einride.tech/can/pkg/socketcan"
 )
 
+const SETTINGS_TICKER = 1000
+
 type Frame660 struct {
 	Rpm					uint16
 	Speed				uint16
@@ -205,7 +207,7 @@ func main() {
 	
 	tx := socketcan.NewTransmitter(conn)
 
-	ticker := time.NewTicker(time.Duration(50) * time.Millisecond)
+	ticker := time.NewTicker(time.Duration(SETTINGS_TICKER) * time.Millisecond)
 	defer ticker.Stop()
 
 	counter := 0
