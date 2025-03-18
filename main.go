@@ -10,8 +10,8 @@ import (
 	"go.einride.tech/can/pkg/socketcan"
 )
 
-const SETTINGS_TICKER = 10
-const SETTINGS_ECU = "KPRO" // S300 || KPRO
+const SETTINGS_TICKER = 1 // TODO: doing 1 as it should spam the client, but client only send at set hertz (probably slow down client though)
+const SETTINGS_ECU = "S300" // S300 || KPRO
 // 100hz = 10ms
 // 25hz = 40
 // 20hz = 50
