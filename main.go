@@ -10,7 +10,7 @@ import (
 	"go.einride.tech/can/pkg/socketcan"
 )
 
-const SETTINGS_TICKER = 1 // TODO: doing 1 as it should spam the client, but client only send at set hertz (probably slow down client though)
+const SETTINGS_TICKER = 10 // TODO: doing 1 as it should spam the client, but client only send at set hertz (probably slow down client though)
 const SETTINGS_ECU = "S300" // S300 || KPRO
 // 100hz = 10ms
 // 25hz = 40
@@ -223,14 +223,14 @@ func incrementFrameData(frame *can.Frame) {
     binary.BigEndian.PutUint16(frame.Data[2:4], frame662.Map)
     
   case 663:
-    if (frame663.Inj == 20) {
-      frame663.Inj = 0
+    if (frame663.Inj == 11900) {
+      frame663.Inj = 11200
     }
     if (frame663.Ign == 20) {
       frame663.Ign = 0
     }
 
-    frame663.Inj += 1
+    frame663.Inj += 100
     frame663.Ign += 1
 
     binary.BigEndian.PutUint16(frame.Data[0:2], uint16(frame663.Inj))
