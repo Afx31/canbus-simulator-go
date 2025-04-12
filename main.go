@@ -10,12 +10,11 @@ import (
 	"go.einride.tech/can/pkg/socketcan"
 )
 
-const SETTINGS_TICKER = 10 // TODO: doing 1 as it should spam the client, but client only send at set hertz (probably slow down client though)
-const SETTINGS_ECU = "S300" // S300 || KPRO
-// 100hz = 10ms
-// 25hz = 40
-// 20hz = 50
-// 10hz = 1000
+const (
+	// This is purely for spamming data, more realistic hz for CAN should be about 100hz
+	SETTINGS_HZ = 100
+	SETTINGS_ECU = "S300"
+)
 
 type Frame660 struct {
 	Rpm					uint16
@@ -23,7 +22,6 @@ type Frame660 struct {
 	Gear				uint8
 	Voltage			uint8
 }
-
 type Frame661 struct {
 	Iat					uint16
 	Ect					uint16
@@ -31,44 +29,36 @@ type Frame661 struct {
 	Vts					uint8
 	Cl					uint8
 }
-
 type Frame662 struct {
 	Tps					uint16
 	Map					uint16
 }
-
 type Frame663 struct {
 	Inj					float64
 	Ign					uint16
 }
-
 type Frame664 struct {
 	LambdaRatio uint16
 }
-
 type Frame665 struct {
 	Knock				uint16
 }
-
 type Frame666 struct {
 	TargetCamAngle	float64
 	ActualCamAngle	float64
 }
-
 type Frame667 struct {
 	OilTemp			uint16
 	OilPressure	uint16
 	//Analog2			uint16
 	//Analog3			uint16
 }
-
 // type Frame668 struct {
 // 	Analog4			uint16
 // 	Analog5			uint16
 // 	Analog6			uint16
 // 	Analog7			uint16
 // }
-
 type Frame669S300 struct {
 	Frequency			uint8
 	Duty					float64
@@ -388,18 +378,16 @@ func main() {
     Length: 4,
     Data: [8]byte { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 },
   }
-	
-	tx := socketcan.NewTransmitter(conn)
 
-	ticker := time.NewTicker(SETTINGS_TICKER * time.Millisecond)
+	ticker := time.NewTicker(time.Second / time.Duration(SETTINGS_HZ))
 	defer ticker.Stop()
 
+	tx := socketcan.NewTransmitter(conn)
 	counter := 0
 
 	for {
 		select {
 		case <-ticker.C:
-
 			switch (counter) {
 			case 0:
 				incrementFrameData(&frame660)
