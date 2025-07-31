@@ -34,7 +34,7 @@ type Frame662 struct {
 	Map					uint16
 }
 type Frame663 struct {
-	Inj					float64
+	Inj					uint16 // TODO: float64
 	Ign					uint16
 }
 type Frame664 struct {
@@ -61,12 +61,12 @@ type Frame667 struct {
 // }
 type Frame669S300 struct {
 	Frequency			uint8
-	Duty					float64
+	Duty					uint8 // TODO: float64float64
 	Content				float64
 }
 type Frame669KPRO struct {
 	Frequency				uint8
-	EthanolContent	float64
+	EthanolContent	uint8 // TODO: float64
 	FuelTemperature	uint16
 }
 
@@ -120,13 +120,13 @@ var (
 
 	frame669S300 = Frame669S300 {
 		Frequency: 1,
-		Duty: 1.0,
+		Duty: 1,
 		Content: 1.0,
 	}
 
 	frame669KPRO = Frame669KPRO {
 		Frequency: 1,
-		EthanolContent: 1.0,
+		EthanolContent: 1,
 		FuelTemperature: 1.0,
 	}
 )
@@ -283,38 +283,38 @@ func incrementFrameData(frame *can.Frame) {
 			if (frame669S300.Frequency == 20) {
 				frame669S300.Frequency = 0
 			}
-			if (frame669S300.Duty == 20.0) {
-				frame669S300.Duty = 0.0
+			if (frame669S300.Duty == 10) {
+				frame669S300.Duty = 0
 			}
 			if (frame669S300.Content == 20.0) {
 				frame669S300.Content = 0.0
 			}
 
 			frame669S300.Frequency += 2
-			frame669S300.Duty += 0.5
+			frame669S300.Duty += 1
 			frame669S300.Content += 0.2
 
 			frame.Data[0] = frame669S300.Frequency
-			frame.Data[1] = byte(frame669S300.Duty)
+			frame.Data[1] = frame669S300.Duty
 			frame.Data[2] = byte(frame669S300.Content)
 
 		} else if (SETTINGS_ECU == "KPRO") {
 			if (frame669KPRO.Frequency == 20) {
 				frame669KPRO.Frequency = 0
 			}
-			if (frame669KPRO.EthanolContent == 20.0) {
-				frame669KPRO.EthanolContent = 0.0
+			if (frame669KPRO.EthanolContent == 10) {
+				frame669KPRO.EthanolContent = 0
 			}
 			if (frame669KPRO.FuelTemperature == 40) {
 				frame669KPRO.FuelTemperature = 0
 			}
 
 			frame669KPRO.Frequency += 2
-			frame669KPRO.EthanolContent += 0.5
+			frame669KPRO.EthanolContent += 1
 			frame669KPRO.FuelTemperature += 2
 
 			frame.Data[0] = frame669KPRO.Frequency
-			frame.Data[1] = byte(frame669KPRO.EthanolContent)
+			frame.Data[1] = frame669KPRO.EthanolContent
 			binary.BigEndian.PutUint16(frame.Data[2:4], frame669KPRO.FuelTemperature)
 		}
 	}
